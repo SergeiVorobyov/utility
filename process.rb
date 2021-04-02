@@ -32,5 +32,5 @@ end
 
 data[:tracks].each do |track_num, track|
   result_filename = clean_filename("#{track[:track_num_str]}. #{track[:title]}.flac")
-  `flac.exe -8 --silent --exhaustive-model-search #{"--skip=\"#{track[:start]}\" " if track[:start]} #{"--until=\"#{track[:end]}\" " if track[:end]} --tag=GENRE=Pop --tag=ARTIST="#{data[:artist]}" --tag=ALBUMARTIST="#{data[:artist]}" --tag=ALBUM="#{data[:title]}" --tag=DATE="#{data[:date]}" --tag=TITLE="#{track[:title]}" --tag=TRACKNUMBER="#{track[:track_num_str]}" "#{data[:file]}" --output-name="#{result_filename}"`
+  `flac.exe -8 --silent --exhaustive-model-search #{"--skip=\"#{track[:start]}\" " if track[:start]} #{"--until=\"#{track[:end]}\" " if track[:end]} --tag=GENRE=Pop --tag=ARTIST="#{data[:performer]}" --tag=ALBUMARTIST="#{data[:performer]}" --tag=ALBUM="#{data[:title]}" --tag=DATE="#{data[:date]}" --tag=TITLE="#{track[:title]}" --tag=TRACKNUMBER="#{track[:track_num_str]}" "#{data[:file]}" --output-name="#{result_filename}"`
 end
