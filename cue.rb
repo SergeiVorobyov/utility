@@ -13,37 +13,18 @@ class Cue
         data[:tracks][idx] ||= {track_num_str: current_track_number}
 
         if line =~ /TITLE/
-          title = line.scan(/TITLE "(.+)"/).first.first
+          title = line.scan(/TITLE "(.+)"/).first.first.strip
           data[:tracks][idx][:title] = title
           data[:tracks][idx][:filename] = self.clean_filename("#{current_track_number}. #{title}.flac")
         end
 
         if line =~ /INDEX/
-          start = line.scan(/INDEX \d+ (.+)/).first.first.gsub(/:(\d{2})$/, ',\1')
+          start = line.scan(/INDEX \d+ (.+)/).first.first
+          start[5] = ','
           data[:tracks][idx][:start] = start
           data[:tracks][idx - 1][:end] = start if data[:tracks].size > 1
         end
 
-      else
-        [:performer, :title, :date, :file].each do |tag|
-          data[tag] = line.scan(/#{tag.to_s.upcase} "(.+)"/).first.first if line =~ /#{tag.to_s.upcase}/
-        end
-      end
-
-      if current_track_number
-        idx = current_track_number.to_i
-        data[:tracks][idx] ||= {track_num_str: current_track_number}
-        if line =~ /TITLE/
-          
-          data[:tracks][idx][:title] = title
-          
-        end
-        
-        if line =~ /INDEX/
-          start = line.scan(/INDEX \d+ (.+)/).first.first.split(':')
-          data[:tracks][idx][:start] = start
-          data[:tracks][idx - 1][:end] = start if data[:tracks].size > 1
-        end
       else
         [:performer, :title, :date, :file].each do |tag|
           data[tag] = line.scan(/#{tag.to_s.upcase} "(.+)"/).first.first if line =~ /#{tag.to_s.upcase}/
